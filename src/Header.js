@@ -6,9 +6,9 @@ import {
 const Header = ()=>{
     const location = useLocation();
     return(
-        <div>
+        <div className="row nav-container">
             <nav>
-                <div className="nav-wrapper purple darken-3 ">
+                <div className="nav-wrapper #42a5f5 blue lighten-1 ">
                     <a href="#!" data-target="mobile-demo" className="brand-logo" style={{marginLeft:"100px"}}>EduBot</a>
                     <img src={require('../src/Assests/Images/edubBotLogo.gif')} width="auto" height="64" alt="loading..." />
                     <ul id="nav-mobile" className="right hide-on-med-and-down">

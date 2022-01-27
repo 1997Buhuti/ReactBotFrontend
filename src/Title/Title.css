@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+*{
+    box-sizing: border-box;
+}
+body{
+    justify-content: center;
+    display: flex;
+    align-content: center;
+    font-family: 'Comfortaa', cursive;
+    background: #7CD1B8;
+    min-height: 100vh;
+    overflow: hidden;
+}
+.container{
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.container .look{
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.container .look span{
+    font-size: 3.5em;
+    color: #fff;
+    font-weight: 900;
+    padding: 15px;
+    line-height: 3.5em;
+    text-shadow:1px 5px 5px  #3E8E7E;
+}
+.o1{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #fff;
+    margin: 5px;
+    margin-top: 28px;
+    box-shadow: 0px 5px 5px 2px #3E8E7E;
+}
+.o2{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #fff;
+    margin-top: 28px;
+    box-shadow: 0px 5px 5px 2px #3E8E7E;
+}
+.eye1{
+    justify-content: center;
+    align-items: center;
+    margin-top: -10px;
+    margin-left:-5px ;
+    width: 30px;
+    height: 40px;
+    border-radius: 47%;
+    background:#7CD1B8;
+    box-shadow: inset 0px 2px 5px 2px #3E8E7E;
+    animation: leftblink 2s linear infinite;
+}
+.eye2{
+    width: 30px;
+    height: 40px;
+    margin-top: -10px;
+    margin-left:-5px ;
+    border-radius: 47%;
+    background:#7CD1B8;
+    box-shadow:0px 2px 5px 2px #3E8E7E inset;
+    animation: rightblink 2s linear infinite;
+
+}
+@keyframes leftblink {
+    0%{
+        transform: translate(0px);
+    }
+    30%{
+        transform: translateX(-10px);
+    }
+    50%{
+        transform: translateX(10px);
+    }
+
+    60%{
+        transform: scaleY(-1);
+    }
+    100%{
+        transform: scaleY(1);
+    }
+}
+
+@keyframes rightblink {
+    0%{
+        transform: translate(0px);
+    }
+    30%{
+        transform: translateX(-10px);
+    }
+    50%{
+        transform: translateX(10px);
+    }
+
+    60%{
+        transform: scaleY(-1);
+    }
+    100%{
+        transform: scaleY(1);
+    }
+}
+
+.eyeball-1{
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 20px;
+    left: 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 47%;
+    background:#fff;
+    box-shadow:  0px 2px 5px 2px #3E8E7E;
+
+}
+.eyeball-2{
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 20px;
+    left: 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 47%;
+    background:#fff;
+    box-shadow:  0px 2px 5px 2px #3E8E7E;
+
+}
