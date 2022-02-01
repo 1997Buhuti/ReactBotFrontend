@@ -1,6 +1,8 @@
 import React , {Component}from 'react';
 import axios from "axios/index";
 import Message from "./Message";
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
 class Chatbot extends Component{
 
@@ -95,3 +97,5 @@ class Chatbot extends Component{
 
 }
 export default Chatbot;
+
+

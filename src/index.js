@@ -8,14 +8,15 @@ import About from "./pages/About";
 import Shop from "./shop/Shop";
 import Login from "./pages/Login";
 import './index.css';
+import Landing from "./pages/Landing";
 ReactDOM.render(
   <React.StrictMode>
       <BrowserRouter>
           <Routes>
               <Route path="/" element={<App />}/>
               <Route path="/about" element={<About/>} />
-              <Route path="/shop" element={<Shop/>} />
-              <Route path="/shop" element={<Login/>} />
+              <Route path="/userGuide" element={<Landing/>} />
+              <Route path="/login" element={<Login/>} />
           </Routes>
       </BrowserRouter>
   </React.StrictMode>,

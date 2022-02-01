@@ -3,9 +3,9 @@ import Header from "../Header";
 
 const Landing = ()=>{
     return(
-        <div>
+        <div >
             <Header/>
-            <h1>Inside landing Page</h1>
+            <h1>These are the guideLines for the users</h1>
         </div>
     )
 }
