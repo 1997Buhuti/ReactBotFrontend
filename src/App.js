@@ -3,6 +3,7 @@ import Header from './Header';
 import Chatbot from './Chatobot/Chatbot';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import Chatbot2 from "./Chatobot/ChatBot2";
 
 function App() {
     const container = {
@@ -61,7 +62,7 @@ function App() {
                                 <Tagline> Hi I'm EduBot your new learning assistant ... </Tagline>
                             </motion.div>
                             <div className="chatbot-content-container col l4 s12" style={{paddingTop: '35px'}}>
-                                <Chatbot/>
+                                <Chatbot2/>
                             </div>
                         </div>
                     </div>

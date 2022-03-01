@@ -1,8 +1,6 @@
 import React , {Component}from 'react';
 import axios from "axios/index";
 import Message from "./Message";
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
 
 class Chatbot extends Component{
 
@@ -24,8 +22,8 @@ class Chatbot extends Component{
                 }
 
             }
-    }
-    //this method is used to set the state  of the message
+        }
+        //this method is used to set the state  of the message
         this.setState({messages:[...this.state.messages, says]})
         const res = await axios.post(' http://localhost:5000/api/df_text_query', {text:queryText});
 
@@ -43,6 +41,7 @@ class Chatbot extends Component{
         const res = await axios.post('http://localhost:5000/api/df_text_query', {event:eventName});
 
         for(let msg of res.data.fulfillmentMessages){
+            console.log(res);
             console.log(res.data.fulfillmentMessages);
             let says = {
                 speaks:'bot',
@@ -79,19 +78,20 @@ class Chatbot extends Component{
     }
     render() {
         return (
-            <div className="Chatbot" style={{height: 560 , width: 400, float: 'right'}}>
-                <iframe
-                    allow="microphone;"
-                    width="350"
-                    height="100%"
-                    src="https://console.dialogflow.com/api-client/demo/embedded/6695ec32-5d84-4865-8704-14561a50aad2">
-                </iframe>
-            </div>
-            //     <div id="chatbot" style={{height: '100%', width: '100%', overflow: 'auto'}}>
-            //         <h2>Chatbot</h2>
-            //         <input type="text"/>
-            //     </div>
-            //
+            // <div className="Chatbot" style={{height: 560 , width: 400, float: 'right'}}>
+            //     <iframe
+            //         allow="microphone;"
+            //         width="350"
+            //         height="100%"
+            //         src="https://console.dialogflow.com/api-client/demo/embedded/6695ec32-5d84-4865-8704-14561a50aad2">
+            //     </iframe>
+            // </div>
+                <div id="chatbot" style={{height: '100%', width: '100%', overflow: 'auto'}}>
+                    <h2>Chatbot</h2>
+                    {this.renderMessages(this.state.messages)}
+                    <input type="text"/>
+                </div>
+
         );
     }
 
