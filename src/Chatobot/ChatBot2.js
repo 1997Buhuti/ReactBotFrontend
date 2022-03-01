@@ -11,23 +11,8 @@ const Chatbot2 = ()=>{
     const [messageToDisaplay,setmessageToDisaplay] = useState({});
 
     useEffect(() => {
-    //     try{
-    //         df_event_query('Welcome').then(()=>
-    //             console.log("Connection Success")
-    //         );
-    //     }
-    //
-    //     catch (err){
-    //         console.log(err);
-    //     }
-       // df_event_query('Welcome').then(r => console.log("this works"));
-        setmessageToDisaplay(messages);
-        console.log(messageToDisaplay.msg);
-    },[messages]);
-
-    const PrintShit = ()=>{
-        console.log('Fuuuuuuuuuuuuuuuuuuuuuuuuuuuuucccccccccccccccccccccccccccckkkkkkkkkkkkkkkkkkkk')
-    }
+        df_event_query("welcome").then(r => console.log("event query succeded"));
+    },[]);
 
     const df_text_query= async(queryText)=>{
         let says = {
@@ -54,13 +39,35 @@ const Chatbot2 = ()=>{
     };
 
     const df_event_query= async (eventName)=>{
-        console.log("inside  df_event_query");
-        const res = await axios.post('http://localhost:5000/api/df_event_query', {event:eventName});
-        let says = {
-                    speaks:'bot',
-                    msg:res.data.fulfillmentMessages[0].text.text[0]
+
+        const eventQueryVariables = {
+            Event
         }
-        setMessages(says)
+        try{
+            const res = await axios.post('http://localhost:5000/api/df_event_query', {event:eventQueryVariables});
+            const content = res.data.fulfillmentMessages[0];
+            let says = {
+                speaks:'bot',
+                msg:content
+            }
+            console.log("says");
+            console.log(says);
+        }
+        catch (error){
+            let conversation = {
+                who: 'bot',
+                content: {
+                    text: {
+                        text: " Error just occured, please check the problem"
+                    }
+                }
+            }
+            console.log("error");
+        }
+
+
+        //
+        // setMessages(says)
         // for(let msg of res.data.fulfillmentMessages[0].text.text){
         //
         //     let says = {
@@ -71,7 +78,7 @@ const Chatbot2 = ()=>{
         //     //setMessages(msg);
         //
         // }
-        console.log(typeof  res.data.fulfillmentMessages[0].text.text[0]);
+        // console.log(typeof  res.data.fulfillmentMessages[0].text.text[0]);
          //This is what causing the problem
 
 
@@ -79,8 +86,7 @@ const Chatbot2 = ()=>{
 
     const renderMessages=(returnedMessages) =>{
         if (returnedMessages) {
-
-                    return <Message speaks={returnedMessages.speaks} text={returnedMessages.msg}/>;
+            return <Message speaks={returnedMessages.speaks} text={returnedMessages.msg}/>;
         } else {
             return null;
         }
