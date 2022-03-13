@@ -9,8 +9,25 @@ import Shop from "./shop/Shop";
 import Login from "./pages/Login";
 import './index.css';
 import Landing from "./pages/Landing";
+
+//Redux
+import {Provider} from "react-redux";
+import Reducer from "./redux/reducers"
+import ReduxThunk from 'redux-thunk';
+import { createStore, applyMiddleware } from 'redux';
+import promiseMiddleware from 'redux-promise';
+
+//import * as serviceWorker from "./serviceWorker";
+const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
+
 ReactDOM.render(
   <React.StrictMode>
+      <Provider
+      store={createStoreWithMiddleware(
+      Reducer,
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )}
+      >
       <BrowserRouter>
           <Routes>
               <Route path="/" element={<App />}/>
@@ -19,6 +36,7 @@ ReactDOM.render(
               <Route path="/login" element={<Login/>} />
           </Routes>
       </BrowserRouter>
+      </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

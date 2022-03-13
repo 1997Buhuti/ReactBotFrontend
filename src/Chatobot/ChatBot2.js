@@ -1,50 +1,63 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import Message from "./Message";
 import axios from "axios";
-import Chatbot from "./Chatbot";
-
+import {useDispatch, useSelector} from "react-redux";
+import {saveMessage} from "../redux/actions/message_actions";
 
 
 const Chatbot2 = ()=>{
 
-    const [messages, setMessages] = useState({});
-    const [messageToDisaplay,setmessageToDisaplay] = useState({});
+    const dispatch = useDispatch();
+    const messagesFromRedux = useSelector(state => state.message.messages)
 
     useEffect(() => {
-        df_event_query("welcome").then(r => console.log("event query succeded"));
+        df_event_query("welcome");
     },[]);
 
     const df_text_query= async(queryText)=>{
+
+        // Message user sent
         let says = {
             speaks : "user",
             msg : {
                 text :{
                     text:queryText
                 }
-
             }
         }
+        dispatch(saveMessage(says))
         //this method is used to set the state  of the message
-        this.setState({messages:[...this.state.messages, says]})
-        const res = await axios.post(' http://localhost:5000/api/df_text_query', {text:queryText});
-
-        for (let msg of res.data.fulfillmentMessages){
+        try{
+            const res = await axios.post(' http://localhost:5000/api/df_text_query', {text:queryText});
+            for (let msg of res.data.fulfillmentMessages){
+                says = {
+                    speaks: 'bot',
+                    msg: msg
+                }
+            }
+            dispatch(saveMessage(says))
+            console.log(says);
+        } catch (error){
             says = {
                 speaks: 'bot',
-                msg: msg
+                msg: {
+                    text:{
+                        text:"Error occurred please contact the developers"
+                    }
+                }
             }
-            //setMessages({ messages: [...this.state.messages, says]});
-            //setMessages({ messages: [...this.state.messages, says]});
+            dispatch(saveMessage(says))
+            console.log(says);
         }
+
+
+
     };
 
     const df_event_query= async (eventName)=>{
 
-        const eventQueryVariables = {
-            Event
-        }
         try{
-            const res = await axios.post('http://localhost:5000/api/df_event_query', {event:eventQueryVariables});
+            const res = await axios.post('http://localhost:5000/api/df_event_query', {event:eventName});
             const content = res.data.fulfillmentMessages[0];
             let says = {
                 speaks:'bot',
@@ -83,7 +96,19 @@ const Chatbot2 = ()=>{
 
 
     }
+    const keyPressHanlder = (e) => {
+        if (e.key === "Enter") {
 
+            if (!e.target.value) {
+                return alert('you need to type something first')
+            }
+
+            //we will send request to text query route
+            df_text_query(e.target.value)
+
+            e.target.value = "";
+        }
+    }
     const renderMessages=(returnedMessages) =>{
         if (returnedMessages) {
             return <Message speaks={returnedMessages.speaks} text={returnedMessages.msg}/>;
@@ -95,8 +120,8 @@ const Chatbot2 = ()=>{
     return(
             <div id="chatbot" style={{height: '100%', width: '100%', overflow: 'auto'}}>
                 <h2>Chatbot</h2>
-                {renderMessages(messageToDisaplay)}
-                <input type="text"/>
+                {/*renderMessages(messageToDisaplay)*/}
+                <input type="text" onKeyPress={(e) =>keyPressHanlder(e)}/>
             </div>
 
         );
