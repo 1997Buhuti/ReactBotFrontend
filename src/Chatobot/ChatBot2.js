@@ -3,7 +3,7 @@ import Message from "./Message";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import {saveMessage} from "../redux/actions/message_actions";
-
+import { List, Icon, Avatar } from 'antd';
 
 const Chatbot2 = ()=>{
 
@@ -109,18 +109,27 @@ const Chatbot2 = ()=>{
             e.target.value = "";
         }
     }
-    const renderMessages=(returnedMessages) =>{
-        if (returnedMessages) {
-            return <Message speaks={returnedMessages.speaks} text={returnedMessages.msg}/>;
-        } else {
-            return null;
-        }
+    const renderOneMessage = (message, i) => {
+        console.log('message', message)
+        return <List.Item.Meta
+            avatar={<Avatar/>}
+            title={message.speaks}
+            description={message.msg.text.text}
+        />
     }
-
+    const renderMessages = (returnedMessages) => {
+    if (returnedMessages) {
+          return returnedMessages.map((message, i) => {
+          return renderOneMessage(message, i);
+          })
+          } else {
+                    return null;
+                }
+    }
     return(
             <div id="chatbot" style={{height: '100%', width: '100%', overflow: 'auto'}}>
                 <h2>Chatbot</h2>
-                {/*renderMessages(messageToDisaplay)*/}
+                {renderMessages(messagesFromRedux)}
                 <input type="text" onKeyPress={(e) =>keyPressHanlder(e)}/>
             </div>
 
