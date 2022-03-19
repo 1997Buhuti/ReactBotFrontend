@@ -1,6 +1,6 @@
 import React , {Component}from 'react';
 import axios from "axios/index";
-import Message from "./Message";
+import Message from "./Sections/Mesage";
 
 class Chatbot extends Component{
 
