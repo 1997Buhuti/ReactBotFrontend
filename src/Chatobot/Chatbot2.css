@@ -1,7 +1,11 @@
-.card{
+.card-panel{
+    background-color: pink;
+}
+.card-body{
     width: 400px;
     height: 370px;
     margin: 30px auto;
+    color: #010139
 }
 
 .scrollable{

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { saveMessage } from "../redux/actions/message_actions";
@@ -8,10 +8,23 @@ import Message from "./Sections/Mesage";
 const Chatbot2 = () => {
   const dispatch = useDispatch();
   const messagesFromRedux = useSelector((state) => state.message.messages);
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  useEffect(() => {
+    df_event_query("Introduction").then(() =>
+      renderMessages(messagesFromRedux)
+    );
+    df_event_query("MyFunctionality").then(() =>
+      renderMessages(messagesFromRedux)
+    );
+    df_event_query("welcome").then(() => renderMessages(messagesFromRedux));
+  }, []);
 
   useEffect(() => {
-    df_event_query("welcome");
-  }, []);
+    scrollToBottom();
+  }, [messagesFromRedux]);
 
   const df_text_query = async (queryText) => {
     // Message user sent
@@ -62,7 +75,7 @@ const Chatbot2 = () => {
         msg: content,
       };
       console.log("says");
-      console.log(says);
+      dispatch(saveMessage(says));
     } catch (error) {
       let conversation = {
         who: "bot",
@@ -94,6 +107,8 @@ const Chatbot2 = () => {
     );
   };
   const renderMessages = (returnedMessages) => {
+    console.log("U kuil ponnanyek");
+    console.log(returnedMessages);
     if (returnedMessages) {
       return returnedMessages.map((message, i) => {
         return renderOneMessage(message, i);
@@ -104,11 +119,16 @@ const Chatbot2 = () => {
   };
   return (
     <div id="chatbot" className="card-panel grey lighten-5">
-      <h3 className="card-title">Chatbot</h3>
+      <h3 className="card-title border border-primary">Chatbot</h3>
       <div className="card-body">
         <p className="scrollable">
           {renderMessages(messagesFromRedux)}
-          <input type="text" onKeyPress={(e) => keyPressHanlder(e)} />
+          <input
+            type="text"
+            onKeyPress={(e) => keyPressHanlder(e)}
+            style={{ marginTop: "25px" }}
+          />
+          <div ref={messagesEndRef} />
         </p>
       </div>
     </div>
