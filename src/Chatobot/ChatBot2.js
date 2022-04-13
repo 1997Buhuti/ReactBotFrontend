@@ -4,6 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveMessage } from "../redux/actions/message_actions";
 import "./Chatbot2.css";
 import Message from "./Sections/Mesage";
+import Card from "./Sections/Card";
+import Icon, {
+  RobotFilled,
+  RobotOutlined,
+  SmileOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { List, Avatar, Typography } from "antd";
+import { useNavigate } from "react-router";
+const { Title } = Typography;
 
 const Chatbot2 = () => {
   const dispatch = useDispatch();
@@ -12,20 +22,24 @@ const Chatbot2 = () => {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  //Use effect hook used for welcome messages
   useEffect(() => {
     df_event_query("Introduction").then(() =>
-      renderMessages(messagesFromRedux)
+      renderOneMessage(messagesFromRedux)
     );
     df_event_query("MyFunctionality").then(() =>
-      renderMessages(messagesFromRedux)
+      renderOneMessage(messagesFromRedux)
     );
-    df_event_query("welcome").then(() => renderMessages(messagesFromRedux));
+    df_event_query("welcome").then(() => renderOneMessage(messagesFromRedux));
   }, []);
 
+  //Use effect hook used to scroll down message box
   useEffect(() => {
     scrollToBottom();
   }, [messagesFromRedux]);
 
+  //function to invoke text_query functionality in dialogflow
   const df_text_query = async (queryText) => {
     // Message user sent
     let says = {
@@ -63,7 +77,7 @@ const Chatbot2 = () => {
       console.log(says);
     }
   };
-
+  //function to invoke event_query functionality in dialogflow
   const df_event_query = async (eventName) => {
     try {
       const res = await axios.post("http://localhost:5000/api/df_event_query", {
@@ -100,15 +114,48 @@ const Chatbot2 = () => {
       e.target.value = "";
     }
   };
-  const renderOneMessage = (message, i) => {
-    console.log("message", message);
-    return (
-      <Message key={i} speaks={message.speaks} body={message.msg.text.text} />
-    );
+
+  //function to Card
+  const renderCards = (cards) => {
+    return cards.map((card, i) => <Card key={i} cardInfo={card.structValue} />);
   };
+
+  //function to render single message
+  const renderOneMessage = (message, i) => {
+    if (message.speaks && message.msg.text && message.msg.text.text) {
+      return (
+        <Message key={i} speaks={message.speaks} body={message.msg.text.text} />
+      );
+    } else if (message.speaks && message.msg.payload.fields.card) {
+      console.log(message.msg.payload.fields.card.listValue.values);
+      const AvatarSrc =
+        message.who === "bot" ? <RobotOutlined /> : <SmileOutlined />;
+
+      return (
+        <div>
+          <List.Item style={{ padding: "1rem" }}>
+            <List.Item.Meta
+              avatar={
+                <Avatar
+                  style={{
+                    backgroundColor: "#87d068",
+                  }}
+                  icon={<UserOutlined />}
+                />
+              }
+              title={message.who}
+              description={renderCards(
+                message.msg.payload.fields.card.listValue.values
+              )}
+            />
+          </List.Item>
+        </div>
+      );
+    }
+  };
+
+  //render all messages
   const renderMessages = (returnedMessages) => {
-    console.log("U kuil ponnanyek");
-    console.log(returnedMessages);
     if (returnedMessages) {
       return returnedMessages.map((message, i) => {
         return renderOneMessage(message, i);
@@ -118,18 +165,48 @@ const Chatbot2 = () => {
     }
   };
   return (
-    <div id="chatbot" className="card-panel grey lighten-5">
-      <h3 className="card-title border border-primary">Chatbot</h3>
-      <div className="card-body">
-        <p className="scrollable">
-          {renderMessages(messagesFromRedux)}
+    <div>
+      <List.Item>
+        <List.Item.Meta
+          avatar={<RobotOutlined />}
+          title={<a href="https://ant.design">{"WTF"}</a>}
+          description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+        />
+      </List.Item>
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
+      >
+        <Title level={2}>
+          CHAT BOT APP&nbsp;
+          <RobotFilled />
+        </Title>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            height: 700,
+            width: 700,
+            border: "3px solid black",
+            borderRadius: "7px",
+          }}
+        >
+          <div style={{ height: 644, width: "100%", overflow: "auto" }}>
+            {renderMessages(messagesFromRedux)}
+          </div>
           <input
+            style={{
+              margin: 0,
+              width: "100%",
+              height: 50,
+              borderRadius: "4px",
+              padding: "5px",
+              fontSize: "1rem",
+            }}
+            placeholder="Send a message..."
+            onKeyPress={keyPressHanlder}
             type="text"
-            onKeyPress={(e) => keyPressHanlder(e)}
-            style={{ marginTop: "25px" }}
           />
-          <div ref={messagesEndRef} />
-        </p>
+        </div>
       </div>
     </div>
   );
