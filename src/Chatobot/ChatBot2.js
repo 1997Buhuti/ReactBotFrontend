@@ -5,14 +5,15 @@ import { saveMessage } from "../redux/actions/message_actions";
 import "./Chatbot2.css";
 import Message from "./Sections/Mesage";
 import Card from "./Sections/Card";
-import Icon, {
+import {
   RobotFilled,
   RobotOutlined,
+  SendOutlined,
   SmileOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { List, Avatar, Typography } from "antd";
-import { useNavigate } from "react-router";
+import { Row, Col } from "antd";
 const { Title } = Typography;
 
 const Chatbot2 = () => {
@@ -115,6 +116,11 @@ const Chatbot2 = () => {
     }
   };
 
+  const sendButtonHandler = (e) => {
+    df_text_query(e.target.value);
+    e.target.value = "";
+  };
+
   //function to Card
   const renderCards = (cards) => {
     return cards.map((card, i) => <Card key={i} cardInfo={card.structValue} />);
@@ -124,7 +130,12 @@ const Chatbot2 = () => {
   const renderOneMessage = (message, i) => {
     if (message.speaks && message.msg.text && message.msg.text.text) {
       return (
-        <Message key={i} speaks={message.speaks} body={message.msg.text.text} />
+        <Message
+          key={i}
+          speaks={message.speaks}
+          body={message.msg.text.text}
+          style={{ margin: "" }}
+        />
       );
     } else if (message.speaks && message.msg.payload.fields.card) {
       console.log(message.msg.payload.fields.card.listValue.values);
@@ -133,7 +144,7 @@ const Chatbot2 = () => {
 
       return (
         <div>
-          <List.Item style={{ padding: "1rem" }}>
+          <List.Item style={{ padding: "1rem" }} className="CardsMessage">
             <List.Item.Meta
               avatar={
                 <Avatar
@@ -166,13 +177,6 @@ const Chatbot2 = () => {
   };
   return (
     <div>
-      <List.Item>
-        <List.Item.Meta
-          avatar={<RobotOutlined />}
-          title={<a href="https://ant.design">{"WTF"}</a>}
-          description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-        />
-      </List.Item>
       <div
         style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
       >
@@ -192,20 +196,50 @@ const Chatbot2 = () => {
         >
           <div style={{ height: 644, width: "100%", overflow: "auto" }}>
             {renderMessages(messagesFromRedux)}
+            <div ref={messagesEndRef} />
           </div>
-          <input
-            style={{
-              margin: 0,
-              width: "100%",
-              height: 50,
-              borderRadius: "4px",
-              padding: "5px",
-              fontSize: "1rem",
-            }}
-            placeholder="Send a message..."
-            onKeyPress={keyPressHanlder}
-            type="text"
-          />
+          <Row>
+            <Col
+              span={22}
+              Col
+              xs={22}
+              style={{
+                backgroundColor: " #EEEEEE",
+                margin: "0",
+              }}
+            >
+              <input
+                style={{
+                  margin: 0,
+                  width: "90%",
+                  height: 40,
+                  borderRadius: "4px",
+                  padding: "5px",
+                  fontSize: "1rem",
+                }}
+                placeholder="Send a message..."
+                onKeyPress={keyPressHanlder}
+                type="text"
+              />
+            </Col>
+            <Col
+              style={{
+                backgroundColor: " #EEEEEE",
+                textAlign: "right",
+                margin: "0",
+              }}
+              xs={2}
+            >
+              <SendOutlined
+                style={{
+                  fontSize: "24px",
+                  cursor: "pointer",
+                  margin: "10px",
+                }}
+                onClick={keyPressHanlder}
+              />
+            </Col>
+          </Row>
         </div>
       </div>
     </div>

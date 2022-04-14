@@ -1,12 +1,11 @@
 import React from "react";
-// import "materialize-css/dist/css/materialize.min.css";
+import "materialize-css/dist/css/materialize.min.css";
 import "antd/dist/antd.css";
 import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import About from "./pages/About";
-import Shop from "./shop/Shop";
 import Login from "./pages/Login";
 import "./index.css";
 import Landing from "./pages/Landing";

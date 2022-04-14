@@ -1,10 +1,11 @@
 import React from "react";
 import Header from "./Header";
-import Chatbot from "./Chatobot/Chatbot";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import Chatbot2 from "./Chatobot/ChatBot2";
 import { useNavigate } from "react-router-dom";
+import { Button } from "antd";
+import { RobotOutlined } from "@ant-design/icons";
+import Footer from "./Footer";
 
 function App() {
   const container = {
@@ -58,6 +59,7 @@ function App() {
                 src={require("../src/Assests/Images/CoverBot.jpg")}
                 width="auto"
                 height="500"
+                alt="CoverBot"
               />
             </motion.div>
             <motion.div
@@ -69,18 +71,31 @@ function App() {
             >
               <Tagline> Hi I'm EduBot your new learning assistant ... </Tagline>
               <div className="col m2" />
-              <a
-                className="waves-effect waves-light btn-large"
-                onClick={() => navigate("/chatbot")}
-              >
-                Get Started
-              </a>
             </motion.div>
             {/*<div className="chatbot-content-container col l4 s12" style={{paddingTop: '35px'}}>*/}
             {/*    <Chatbot2/>*/}
             {/*</div>*/}
+            <motion.div
+              className="chatbot-panel-view-button col s12 m4"
+              style={{ paddingTop: "35px" }}
+              variants={pageAnimation}
+              initial="hidden"
+              animate="show"
+            >
+              <Button
+                type="primary"
+                block
+                shape="round"
+                onClick={() => navigate("/chatbot")}
+                size="large"
+                icon={<RobotOutlined />}
+              >
+                Get Started
+              </Button>
+            </motion.div>
           </div>
         </div>
+        <div className="header-container col s12" />
       </div>
     </div>
   );
