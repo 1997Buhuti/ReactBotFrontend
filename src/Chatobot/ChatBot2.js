@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { saveMessage } from "../redux/actions/message_actions";
@@ -18,12 +18,12 @@ const { Title } = Typography;
 
 const Chatbot2 = () => {
   const dispatch = useDispatch();
-  const messagesFromRedux = useSelector((state) => state.message.messages);
+  const [TextMessage, setTextMessage] = useState("");
+  let messagesFromRedux = useSelector((state) => state.message.messages);
   const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
   //Use effect hook used for welcome messages
   useEffect(() => {
     df_event_query("Introduction").then(() =>
@@ -32,7 +32,6 @@ const Chatbot2 = () => {
     df_event_query("MyFunctionality").then(() =>
       renderOneMessage(messagesFromRedux)
     );
-    df_event_query("welcome").then(() => renderOneMessage(messagesFromRedux));
   }, []);
 
   //Use effect hook used to scroll down message box
@@ -100,7 +99,7 @@ const Chatbot2 = () => {
           },
         },
       };
-      console.log("error");
+      console.log(error);
     }
   };
   const keyPressHanlder = (e) => {
@@ -108,7 +107,7 @@ const Chatbot2 = () => {
       if (!e.target.value) {
         return alert("you need to type something first");
       }
-
+      setTextMessage("");
       //we will send request to text query route
       df_text_query(e.target.value);
 
@@ -116,9 +115,9 @@ const Chatbot2 = () => {
     }
   };
 
-  const sendButtonHandler = (e) => {
-    df_text_query(e.target.value);
-    e.target.value = "";
+  const sendButtonHandler = () => {
+    df_text_query(TextMessage);
+    setTextMessage("");
   };
 
   //function to Card
@@ -134,7 +133,7 @@ const Chatbot2 = () => {
           key={i}
           speaks={message.speaks}
           body={message.msg.text.text}
-          style={{ margin: "" }}
+          style={{ marginTop: "2px" }}
         />
       );
     } else if (message.speaks && message.msg.payload.fields.card) {
@@ -149,9 +148,9 @@ const Chatbot2 = () => {
               avatar={
                 <Avatar
                   style={{
-                    backgroundColor: "#87d068",
+                    backgroundColor: "#041454",
                   }}
-                  icon={<UserOutlined />}
+                  icon={<RobotFilled />}
                 />
               }
               title={message.who}
@@ -175,6 +174,11 @@ const Chatbot2 = () => {
       return null;
     }
   };
+
+  const handleTextInputChange = (e) => {
+    setTextMessage(e.target.value);
+  };
+
   return (
     <div>
       <div
@@ -219,6 +223,8 @@ const Chatbot2 = () => {
                 }}
                 placeholder="Send a message..."
                 onKeyPress={keyPressHanlder}
+                onChange={handleTextInputChange}
+                value={TextMessage ? TextMessage : ""}
                 type="text"
               />
             </Col>
@@ -236,7 +242,7 @@ const Chatbot2 = () => {
                   cursor: "pointer",
                   margin: "10px",
                 }}
-                onClick={keyPressHanlder}
+                onClick={sendButtonHandler}
               />
             </Col>
           </Row>
