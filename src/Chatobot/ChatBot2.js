@@ -26,6 +26,7 @@ const Chatbot2 = () => {
   };
   //Use effect hook used for welcome messages
   useEffect(() => {
+    renderMessages([]);
     df_event_query("Introduction").then(() =>
       renderOneMessage(messagesFromRedux)
     );

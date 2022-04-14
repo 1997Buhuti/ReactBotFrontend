@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "antd";
-import Icon from "@ant-design/icons";
+import Icon, { LinkOutlined } from "@ant-design/icons";
 import "./sections.css";
 const { Meta } = Card;
 
@@ -24,7 +24,7 @@ function CardComponent(props) {
           rel="noopener noreferrer"
           href={data.cardInfo.fields.link.stringValue}
         >
-          <Icon type="ellipsis" key="ellipsis" />
+          <LinkOutlined />
         </a>,
       ]}
     >
@@ -35,6 +35,5 @@ function CardComponent(props) {
     </Card>
   );
 }
-//props.cardInfo.fields.description.stringValue
-
+//props.cardInfo.fields.description.stringValue sdsd
 export default CardComponent;
