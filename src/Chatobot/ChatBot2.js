@@ -10,14 +10,17 @@ import {
   RobotOutlined,
   SendOutlined,
   SmileOutlined,
+  StepBackwardFilled,
   UserOutlined,
 } from "@ant-design/icons";
-import { List, Avatar, Typography } from "antd";
+import { List, Avatar, Typography, Button } from "antd";
 import { Row, Col } from "antd";
+import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
 
 const Chatbot2 = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [TextMessage, setTextMessage] = useState("");
   let messagesFromRedux = useSelector((state) => state.message.messages);
   const messagesEndRef = useRef(null);
@@ -182,6 +185,15 @@ const Chatbot2 = () => {
 
   return (
     <div>
+      <Button
+        type="dashed"
+        icon={<StepBackwardFilled />}
+        shape="round"
+        size="large"
+        onClick={() => navigate("/")}
+      >
+        Home Page
+      </Button>
       <div
         style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}
       >

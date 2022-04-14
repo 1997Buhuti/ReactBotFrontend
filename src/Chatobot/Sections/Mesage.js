@@ -1,4 +1,5 @@
 import { Avatar, List } from "antd";
+import "./sections.css";
 import React from "react";
 import { RobotFilled, SmileFilled } from "@ant-design/icons";
 
@@ -13,6 +14,7 @@ const Message = (props) => {
       }
       title={props.speaks}
       description={props.body}
+      className="messageText"
     />
   );
 };

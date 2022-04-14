@@ -97,6 +97,9 @@ function App() {
         </div>
         <div className="header-container col s12" />
       </div>
+      <div className="row">
+        <Footer />
+      </div>
     </div>
   );
 }
