@@ -1,40 +1,79 @@
-import React from "react";
-import { Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { Space, Table } from "antd";
+import { getallKB } from "../../API/api";
+import { CloudDownloadOutlined, DeleteOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const KnowledgeBase = () => {
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
+  const [knowledgebase, setKnowledgebase] = useState([]);
+  const [knowledgebaseSize, setKnowledgebaseSize] = useState(1);
+  useEffect(() => {
+    getKnowledgebases();
+  }, []);
+
+  const onDeleteClick = (params) => {
+    console.log("WTF");
+    console.log(params);
+    axios
+      .get(`https://storage.googleapis.com/chatbot_knowledgebases/${params}`)
+      .then((res) => res.data);
+  };
 
   const columns = [
     {
       title: "Name",
-      dataIndex: "name",
+      dataIndex: "displayName",
       key: "name",
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
+      title: "KnowledgeType",
+      dataIndex: "knowledgeTypes",
+      key: "knowledgeTypes",
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "FileType",
+      dataIndex: "mimeType",
+      key: "mimeType",
+    },
+    {
+      title: "URI",
+      dataIndex: "contentUri",
+      key: "contentUri",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text, record) => (
+        <Space size="middle">
+          <CloudDownloadOutlined
+            style={{ fontSize: "16px", cursor: "pointer", color: "blue" }}
+            onClick={() => onDeleteClick(record.displayName)}
+          >
+            <a
+              href={`https://storage.googleapis.com/chatbot_knowledgebases/${record.displayName}`}
+            />
+          </CloudDownloadOutlined>
+          <DeleteOutlined
+            style={{ fontSize: "16px", cursor: "pointer", color: "red" }}
+          />
+        </Space>
+      ),
     },
   ];
-  return <Table dataSource={dataSource} columns={columns} />;
+
+  const getKnowledgebases = async () => {
+    const KB = await getallKB();
+    if (KB.error) {
+      console.log("error");
+      console.log(KB.error);
+    } else {
+      console.log("worked");
+      setKnowledgebase(KB.data.payload);
+      setKnowledgebaseSize(knowledgebase.length);
+      console.log(knowledgebaseSize);
+    }
+  };
+  return <Table dataSource={knowledgebase} columns={columns} />;
 };
 
 export default KnowledgeBase;

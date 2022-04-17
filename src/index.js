@@ -26,6 +26,20 @@ const createStoreWithMiddleware = applyMiddleware(
   ReduxThunk
 )(createStore);
 
+// const routes = [
+//   {
+//     path: "/",
+//     component: App,
+//   },
+//   {
+//     path: "/users",
+//     component: Users,
+//   },
+//   {
+//     path: "/",
+//     component: Home,
+//   },
+// ];
 ReactDOM.render(
   <React.StrictMode>
     <Provider

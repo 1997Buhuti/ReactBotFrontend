@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import Layout, { Content } from "antd/es/layout/layout";
 import { Breadcrumb, Menu } from "antd";
@@ -12,6 +12,9 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Link, Outlet } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { getallKB } from "../API/api";
+import axios from "axios";
 
 const { SubMenu } = Menu;
 // function SubMenu(props) {
@@ -23,12 +26,18 @@ SubMenu.propTypes = {
   icon: PropTypes.element,
   children: PropTypes.node,
 };
+
+function HeaderView() {
+  const location = useLocation();
+  console.log(location.pathname);
+  return location.pathname;
+}
+
 const Dashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
-
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={collapsed} onCollapse={toggleCollapsed}>
@@ -58,11 +67,9 @@ const Dashboard = () => {
       <Layout className="site-layout">
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>KnowledgeBase</Breadcrumb.Item>
-            <Breadcrumb.Item>Create KnowledgeBase</Breadcrumb.Item>
-            <Breadcrumb.Item>Create KnowledgeBase</Breadcrumb.Item>
-            <UserOutlined style={{ fontSize: "30px", marginLeft: "28em" }} />
-            <h6 style={{ marginLeft: "73em" }}>Admin User</h6>
+            <Breadcrumb.Item>{HeaderView()}</Breadcrumb.Item>
+            {/*<UserOutlined style={{ fontSize: "30px", marginLeft: "28em" }} />*/}
+            {/*<h6 style={{ marginLeft: "73em" }}>Admin User</h6>*/}
           </Breadcrumb>
           <div
             className="site-layout-background"
