@@ -17,6 +17,8 @@ import ReduxThunk from "redux-thunk";
 import { createStore, applyMiddleware } from "redux";
 import promiseMiddleware from "redux-promise";
 import Chatbot2 from "./Chatobot/ChatBot2";
+import Dashboard from "./Dashboard/Dashboard";
+import KnowledgeBase from "./Dashboard/DashBoardOptions/KnowledgeBase";
 
 const createStoreWithMiddleware = applyMiddleware(
   promiseMiddleware,
@@ -35,10 +37,13 @@ ReactDOM.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/userGuide" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/chatbot" element={<Chatbot2 />} />
+          <Route path="about" element={<About />} />
+          <Route path="userGuide" element={<Landing />} />
+          <Route path="login" element={<Login />} />
+          <Route path="chatbot" element={<Chatbot2 />} />
+          <Route path="dashboard/*" element={<Dashboard />}>
+            <Route path="knowledgebase" element={<KnowledgeBase />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </Provider>
