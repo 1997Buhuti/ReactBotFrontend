@@ -33,14 +33,10 @@ const Dashboard = () => {
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={collapsed} onCollapse={toggleCollapsed}>
         <div className="logo" />
-        <Menu
-          theme="dark"
-          defaultSelectedKeys={["sub1"]}
-          defaultOpenKeys={["sub1"]}
-          mode="inline"
-        >
+        <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
           <Menu.Item key="1" icon={<HomeOutlined />}>
             Home
+            <Link to="/Dashboard" />
           </Menu.Item>
           <Menu.Item key="2" icon={<ReadOutlined />}>
             KnowledgeBase
