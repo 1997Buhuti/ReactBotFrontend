@@ -32,27 +32,36 @@ function HeaderView() {
   console.log(location.pathname);
   return location.pathname;
 }
-
-const items = [
-  { key: "1", label: "Home", path: "/Dashboard", icon: <HomeOutlined /> },
-  {
-    key: "2",
-    label: "KnowledgeBase",
-    path: "KnowledgeBase",
-    icon: <ReadOutlined />,
-  },
-  // {
-  //   key: "3",
-  //   label: "Service Contract Details",
-  //   path: "/admin/service-contract-details",
-  // },
-  // { key: "4", label: "Cost Centers", path: "/admin/cost-centers" },
-  // { key: "5", label: "Clients", path: "/admin/clients" },
-  // { key: "6", label: "Vendors", path: "/admin/vendors" },
-];
+//
+// const items = [
+//   { key: "1", label: "Home", path: "/Dashboard", icon: <HomeOutlined /> },
+//   {
+//     key: "2",
+//     label: "KnowledgeBase",
+//     path: "KnowledgeBase",
+//     icon: <ReadOutlined />,
+//   },
+//   // {
+//   //   key: "3",
+//   //   label: "Service Contract Details",
+//   //   path: "/admin/service-contract-details",
+//   // },
+//   // { key: "4", label: "Cost Centers", path: "/admin/cost-centers" },
+//   // { key: "5", label: "Clients", path: "/admin/clients" },
+//   // { key: "6", label: "Vendors", path: "/admin/vendors" },
+// ];
 
 const Dashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [items, setItems] = useState([
+    { key: "1", label: "Home", path: "/Dashboard", icon: <HomeOutlined /> },
+    {
+      key: "2",
+      label: "KnowledgeBase",
+      path: "KnowledgeBase",
+      icon: <ReadOutlined />,
+    },
+  ]);
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
