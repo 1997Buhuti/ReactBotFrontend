@@ -11,12 +11,20 @@ const KnowledgeBase = () => {
     getKnowledgebases();
   }, []);
 
-  const onDeleteClick = (params) => {
-    console.log("WTF");
-    console.log(params);
-    axios
-      .get(`https://storage.googleapis.com/chatbot_knowledgebases/${params}`)
-      .then((res) => res.data);
+  // Service for downloading the knowledgebase csv
+  const onDownloadClick = (params) => {
+    axios({
+      url: `http://localhost:5000/api/files/${params}`,
+      method: "GET",
+      responseType: "blob", // important
+    }).then((response) => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${params}.csv`); //only csv for KB
+      document.body.appendChild(link);
+      link.click();
+    });
   };
 
   const columns = [
@@ -47,7 +55,7 @@ const KnowledgeBase = () => {
         <Space size="middle">
           <CloudDownloadOutlined
             style={{ fontSize: "16px", cursor: "pointer", color: "blue" }}
-            onClick={() => onDeleteClick(record.displayName)}
+            onClick={() => onDownloadClick(record.displayName)}
           >
             <a
               href={`https://storage.googleapis.com/chatbot_knowledgebases/${record.displayName}`}

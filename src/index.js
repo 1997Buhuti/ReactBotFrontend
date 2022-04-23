@@ -57,7 +57,7 @@ ReactDOM.render(
           <Route path="login" element={<Login />} />
           <Route path="chatbot" element={<Chatbot2 />} />
           <Route path="dashboard/*" element={<Dashboard />}>
-            <Route index element={<Home />} />
+            <Route ath="dashboard" index element={<Home />} />
             <Route path="knowledgebase" element={<KnowledgeBase />} />
           </Route>
         </Routes>
