@@ -53,60 +53,55 @@ function HeaderView() {
 
 const Dashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [items, setItems] = useState([
-    { key: "1", label: "Home", path: "/Dashboard", icon: <HomeOutlined /> },
-    {
-      key: "2",
-      label: "KnowledgeBase",
-      path: "KnowledgeBase",
-      icon: <ReadOutlined />,
-    },
-  ]);
+  // const [items, setItems] = useState([
+  //   { key: "1", label: "Home", path: "/Dashboard", icon: <HomeOutlined /> },
+  //   {
+  //     key: "2",
+  //     label: "KnowledgeBase",
+  //     path: "KnowledgeBase",
+  //     icon: <ReadOutlined />,
+  //   },
+  // ]);
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+  //
+  // const location = useLocation();
+  // const navigate = useNavigate();
+  //
+  // const [selectedKey, setSelectedKey] = useState(
+  //   items.find((_item) => location.pathname.startsWith(_item.path)).key
+  // );
+  //
+  // const onClickMenu = (item) => {
+  //   const clicked = items.find((_item) => _item.key === item.key);
+  //   navigate(clicked.path);
+  // };
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const [selectedKey, setSelectedKey] = useState(
-    items.find((_item) => location.pathname.startsWith(_item.path)).key
-  );
-
-  const onClickMenu = (item) => {
-    const clicked = items.find((_item) => _item.key === item.key);
-    navigate(clicked.path);
-  };
-
-  useEffect(() => {
-    setSelectedKey(
-      items.find((_item) => location.pathname.startsWith(_item.path)).key
-    );
-  }, [location]);
+  // useEffect(() => {
+  //   setSelectedKey(
+  //     items.find((_item) => location.pathname.startsWith(_item.path)).key
+  //   );
+  // }, [location]);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={collapsed} onCollapse={toggleCollapsed}>
         <div className="logo" />
-        <Menu
-          theme="dark"
-          selectedKeys={[selectedKey]}
-          mode="inline"
-          onClick={onClickMenu}
-        >
-          {items.map((item) => (
-            <Menu.Item key={item.key} icon={item.icon} onClick={onClickMenu}>
-              {item.label}
-            </Menu.Item>
-          ))}
-          {/*<Menu.Item key="1" icon={<HomeOutlined />}>*/}
-          {/*  Home*/}
-          {/*  <Link to="/Dashboard" />*/}
-          {/*</Menu.Item>*/}
-          {/*<Menu.Item key="2" icon={<ReadOutlined />}>*/}
-          {/*  KnowledgeBase*/}
-          {/*  <Link to="KnowledgeBase" />*/}
-          {/*</Menu.Item>*/}
+        <Menu theme="dark" selectedKeys={""} mode="inline">
+          {/*/!*{items.map((item) => (*!/*/}
+          {/*/!*  <Menu.Item key={item.key} icon={item.icon} onClick={onClickMenu}>*!/*/}
+          {/*/!*    {item.label}*!/*/}
+          {/*/!*  </Menu.Item>*!/*/}
+          {/*))}*/}
+          <Menu.Item key="1" icon={<HomeOutlined />}>
+            Home
+            <Link to="/Dashboard" />
+          </Menu.Item>
+          <Menu.Item key="2" icon={<ReadOutlined />}>
+            KnowledgeBase
+            <Link to="KnowledgeBase" />
+          </Menu.Item>
           {/*<Menu.Item key="3" icon={<MessageOutlined />}>*/}
           {/*  Intents*/}
           {/*</Menu.Item>*/}
