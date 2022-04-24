@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Space, Table } from "antd";
+import { Button, Form, Space, Table } from "antd";
 import { getallKB } from "../../API/api";
-import { CloudDownloadOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  CloudDownloadOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import axios from "axios";
+import Modal from "antd/es/modal/Modal";
+import AddKbFormModal from "./modals/AddKbFormModal";
 
 const KnowledgeBase = () => {
   const [knowledgebase, setKnowledgebase] = useState([]);
   const [knowledgebaseSize, setKnowledgebaseSize] = useState(1);
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
     getKnowledgebases();
   }, []);
 
+  const showModal = () => {
+    setVisible(true);
+  };
   // Service for downloading the knowledgebase csv
   const onDownloadClick = (params) => {
     axios({
@@ -25,6 +36,22 @@ const KnowledgeBase = () => {
       document.body.appendChild(link);
       link.click();
     });
+  };
+
+  const handleOkBtnClicked = () => {
+    console.log("handleOkBtnClicked");
+    setVisible(false);
+  };
+
+  const formRef = React.createRef();
+
+  const handleModalOkClick = () => {
+    formRef.submit();
+  };
+
+  const handleCancel = () => {
+    console.log("Clicked cancel button");
+    setVisible(false);
   };
 
   const columns = [
@@ -81,7 +108,24 @@ const KnowledgeBase = () => {
       console.log(knowledgebaseSize);
     }
   };
-  return <Table dataSource={knowledgebase} columns={columns} />;
+  return (
+    <>
+      <Table dataSource={knowledgebase} columns={columns} />
+      <Button
+        type="primary"
+        shape="round"
+        icon={<PlusOutlined />}
+        size="large"
+        onClick={showModal}
+      >
+        Add KnowledgeBase{" "}
+      </Button>
+      <AddKbFormModal
+        visibility={visible}
+        handleOkBtnClicked={handleOkBtnClicked}
+      />
+    </>
+  );
 };
 
 export default KnowledgeBase;

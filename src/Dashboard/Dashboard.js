@@ -53,6 +53,7 @@ function HeaderView() {
 
 const Dashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [selectedKey, setSelectedKey] = useState("");
   // const [items, setItems] = useState([
   //   { key: "1", label: "Home", path: "/Dashboard", icon: <HomeOutlined /> },
   //   {
@@ -88,17 +89,25 @@ const Dashboard = () => {
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={collapsed} onCollapse={toggleCollapsed}>
         <div className="logo" />
-        <Menu theme="dark" selectedKeys={""} mode="inline">
+        <Menu theme="dark" selectedKeys={selectedKey} mode="inline">
           {/*/!*{items.map((item) => (*!/*/}
           {/*/!*  <Menu.Item key={item.key} icon={item.icon} onClick={onClickMenu}>*!/*/}
           {/*/!*    {item.label}*!/*/}
           {/*/!*  </Menu.Item>*!/*/}
           {/*))}*/}
-          <Menu.Item key="1" icon={<HomeOutlined />}>
+          <Menu.Item
+            key="1"
+            icon={<HomeOutlined />}
+            onClick={() => setSelectedKey("1")}
+          >
             Home
             <Link to="/Dashboard" />
           </Menu.Item>
-          <Menu.Item key="2" icon={<ReadOutlined />}>
+          <Menu.Item
+            key="2"
+            icon={<ReadOutlined />}
+            onClick={() => setSelectedKey("2")}
+          >
             KnowledgeBase
             <Link to="KnowledgeBase" />
           </Menu.Item>
