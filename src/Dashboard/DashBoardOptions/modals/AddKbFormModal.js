@@ -1,8 +1,6 @@
 import { Modal, Button, Form, Select, Upload, message } from "antd";
 import { useState } from "react";
 import Input from "antd/es/input/Input";
-import Checkbox from "antd/es/checkbox/Checkbox";
-import { Option } from "antd/es/mentions";
 import { UploadOutlined } from "@ant-design/icons";
 
 const onFinish = (values) => {
@@ -22,8 +20,6 @@ const tailLayout = {
 };
 
 const AddKbFormModal = (props) => {
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState("Content of the modal");
   const [fileName, setFileName] = useState("");
 
   const [form] = Form.useForm();
@@ -68,7 +64,12 @@ const AddKbFormModal = (props) => {
       onCancel={() => props.handleOkBtnClicked()}
     >
       <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
-        <Form.Item name="note" label="File Name" rules={[{ required: true }]}>
+        <Form.Item
+          name="fileName"
+          label="File Name"
+          rules={[{ required: true }]}
+          initialValue={fileName}
+        >
           <Input />
         </Form.Item>
         <Form.Item name="URI" label="URI" rules={[{ required: true }]}>
@@ -78,10 +79,20 @@ const AddKbFormModal = (props) => {
           <Upload
             action={"http://localhost:5000/api/upload"}
             beforeUpload={(file) => {
-              console.log(file);
+              if (file) {
+                console.log(file);
+                form.setFieldsValue({ fileName: file.name });
+              }
             }}
             data={(response) => {
               console.log(response.response);
+            }}
+            onChange={(info) => {
+              if (info.file.status === "done") {
+                // Handle response from API
+                console.log(info.file.response);
+                form.setFieldsValue({ URI: info.file.response.gsutilURI });
+              }
             }}
           >
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
