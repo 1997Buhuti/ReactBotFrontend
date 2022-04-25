@@ -2,6 +2,7 @@ import { Modal, Button, Form, Select, Upload, message } from "antd";
 import { useState } from "react";
 import Input from "antd/es/input/Input";
 import { UploadOutlined } from "@ant-design/icons";
+import _ from "lodash";
 
 const onFinish = (values) => {
   console.log("Success:", values);
@@ -20,48 +21,45 @@ const tailLayout = {
 };
 
 const AddKbFormModal = (props) => {
-  const [fileName, setFileName] = useState("");
+  const [fileName, setFileName] = useState(""); // state for fileName
+  const [uri, setUri] = useState(""); // state for URI
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const [form] = Form.useForm();
   const onFinish = (values) => {
     console.log(values);
   };
 
-  const onReset = () => {
-    form.resetFields();
+  //handler for changing the filename input
+  const handleFileNameChange = (e) => {
+    setFileName(e.target.value);
   };
 
-  const onFill = () => {
-    form.setFieldsValue({
-      note: "Hello world!",
-      gender: "male",
-    });
+  //handler for changing the URI input
+  const handleUriChange = (e) => {
+    setUri(e.target.value);
   };
 
-  const fileProps = {
-    name: "file",
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    headers: {
-      authorization: "authorization-text",
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file added successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
+  const okBtnHandler = async (obj) => {
+    setConfirmLoading(true);
+    if (_.isEmpty(obj)) {
+      console.log("error you need to add a file first Bro");
+    } else {
+      console.log("This is the Obj");
+      console.log(obj);
+      const res = await props
+        .handleOkBtnClicked(obj)
+        .then(setConfirmLoading(false));
+    }
   };
 
   return (
     <Modal
       title="Add KnowledgeBase"
       visible={props.visibility}
-      onOk={() => props.handleOkBtnClicked()}
-      onCancel={() => props.handleOkBtnClicked()}
+      onOk={() => okBtnHandler({ fileName, uri })}
+      onCancel={() => props.handleCancel()}
+      confirmLoading={confirmLoading}
     >
       <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
         <Form.Item
@@ -69,10 +67,16 @@ const AddKbFormModal = (props) => {
           label="File Name"
           rules={[{ required: true }]}
           initialValue={fileName}
+          onChange={handleFileNameChange}
         >
           <Input />
         </Form.Item>
-        <Form.Item name="URI" label="URI" rules={[{ required: true }]}>
+        <Form.Item
+          name="URI"
+          label="URI"
+          rules={[{ required: true }]}
+          onChange={handleUriChange}
+        >
           <Input />
         </Form.Item>
         <Form.Item {...tailLayout}>
@@ -82,6 +86,7 @@ const AddKbFormModal = (props) => {
               if (file) {
                 console.log(file);
                 form.setFieldsValue({ fileName: file.name });
+                setFileName(file.name);
               }
             }}
             data={(response) => {
@@ -92,6 +97,7 @@ const AddKbFormModal = (props) => {
                 // Handle response from API
                 console.log(info.file.response);
                 form.setFieldsValue({ URI: info.file.response.gsutilURI });
+                setUri(info.file.response.gsutilURI);
               }
             }}
           >

@@ -38,16 +38,17 @@ const KnowledgeBase = () => {
     });
   };
 
-  const handleOkBtnClicked = () => {
+  const handleOkBtnClicked = async (payload) => {
     console.log("handleOkBtnClicked");
+    const res = await axios.post("http://localhost:5000/api/uploadKB", {
+      documentName: payload.fileName,
+      documentPath: payload.uri,
+    });
+    console.log(res);
     setVisible(false);
   };
 
   const formRef = React.createRef();
-
-  const handleModalOkClick = () => {
-    formRef.submit();
-  };
 
   const handleCancel = () => {
     console.log("Clicked cancel button");
@@ -123,9 +124,9 @@ const KnowledgeBase = () => {
       <AddKbFormModal
         visibility={visible}
         handleOkBtnClicked={handleOkBtnClicked}
+        handleCancel={handleCancel}
       />
     </>
   );
 };
-
 export default KnowledgeBase;
