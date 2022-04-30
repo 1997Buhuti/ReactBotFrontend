@@ -30,9 +30,9 @@ const Chatbot2 = () => {
   //Use effect hook used for welcome messages
   useEffect(() => {
     renderMessages([]);
-    df_event_query("Introduction").then(() =>
-      renderOneMessage(messagesFromRedux)
-    );
+    df_event_query("Introduction").then(() => {
+      renderOneMessage(messagesFromRedux);
+    });
     df_event_query("MyFunctionality").then(() =>
       renderOneMessage(messagesFromRedux)
     );
@@ -106,6 +106,12 @@ const Chatbot2 = () => {
       console.log(error);
     }
   };
+  const handleQuickReplyPayload = (event, payload, text) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    df_text_query(text).then((r) => console.log(r));
+  };
   const keyPressHanlder = (e) => {
     if (e.key === "Enter") {
       if (!e.target.value) {
@@ -129,9 +135,48 @@ const Chatbot2 = () => {
     return cards.map((card, i) => <Card key={i} cardInfo={card.structValue} />);
   };
 
+  //function to trigger ok and no
+  const triggerRespons = (val) => {
+    console.log(val);
+    if (val === true) {
+      // df_text_query("I have to ask the teacher");
+      df_text_query("I need to leave a message to a teacher").then(() => {
+        renderOneMessage(messagesFromRedux);
+      });
+    }
+  };
+
   //function to render single message
   const renderOneMessage = (message, i) => {
+    console.log("render One Message");
     if (message.speaks && message.msg.text && message.msg.text.text) {
+      // let val = message.msg.text.text.toString() === "Answer";
+      // console.log(val);
+      // if (val) {
+      //   console.log("Tigga");
+      // }
+      if (message.msg.text.text.toString() === "Answer") {
+        return (
+          <div style={{ padding: "1rem", marginLeft: "2rem" }}>
+            <h6>Sorry I cant understand what you've said?</h6>
+            <h6>do you want to send this question to Teacher?</h6>
+            <Button
+              style={{ margin: "0.5rem" }}
+              type="primary"
+              onClick={() => triggerRespons(true)}
+            >
+              Ok
+            </Button>
+            <Button
+              style={{ margin: "0.5rem" }}
+              type="danger"
+              onClick={() => triggerRespons(false)}
+            >
+              No
+            </Button>
+          </div>
+        );
+      }
       return (
         <Message
           key={i}
@@ -170,10 +215,13 @@ const Chatbot2 = () => {
 
   //render all messages
   const renderMessages = (returnedMessages) => {
+    console.log("render Message");
     if (returnedMessages) {
       return returnedMessages.map((message, i) => {
         return renderOneMessage(message, i);
       });
+    } else if (returnedMessages.length > 0) {
+      console.log("Hell returnedMessages are empoty");
     } else {
       return null;
     }

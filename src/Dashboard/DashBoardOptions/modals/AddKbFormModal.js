@@ -3,6 +3,8 @@ import { useState } from "react";
 import Input from "antd/es/input/Input";
 import { UploadOutlined } from "@ant-design/icons";
 import _ from "lodash";
+import NotificationService from "../../../Services/NotificationService/NotificationService";
+import notify from "../../../Services/NotificationService/NotificationService";
 
 const onFinish = (values) => {
   console.log("Success:", values);
@@ -47,9 +49,11 @@ const AddKbFormModal = (props) => {
     } else {
       console.log("This is the Obj");
       console.log(obj);
-      const res = await props
-        .handleOkBtnClicked(obj)
-        .then(setConfirmLoading(false));
+      const res = await props.handleOkBtnClicked(obj).then(() => {
+        form.resetFields();
+        setConfirmLoading(false);
+        notify("Success!");
+      });
     }
   };
 
@@ -82,6 +86,7 @@ const AddKbFormModal = (props) => {
         <Form.Item {...tailLayout}>
           <Upload
             action={"http://localhost:5000/api/upload"}
+            multiple={false}
             beforeUpload={(file) => {
               if (file) {
                 console.log(file);
