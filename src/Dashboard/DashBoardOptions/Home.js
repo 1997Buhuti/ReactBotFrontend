@@ -4,15 +4,31 @@ import { Row, Col, Table, Card } from "antd";
 const dataSource = [
   {
     key: "1",
-    name: "Mike",
-    age: 32,
-    address: "10 Downing Street",
+    name: "Awishka",
+    email: "Random@gmail.com",
+    question: "Why do we need sunlight?",
+    date: "2022/04/11",
   },
   {
     key: "2",
-    name: "John",
-    age: 42,
-    address: "10 Downing Street",
+    name: "Gimhanha",
+    email: "Clover@gmail.com",
+    question: "What are the sources of electricity?",
+    date: "2022/04/13",
+  },
+  {
+    key: "2",
+    name: "Sudeepa",
+    email: "Sudeepa@gmail.com",
+    question: "What is photosynthesis",
+    date: "2022/04/03",
+  },
+  {
+    key: "2",
+    name: "Charith",
+    email: "Charith@gmail.com",
+    question: "What are insulators",
+    date: "2022/04/03",
   },
 ];
 
@@ -23,14 +39,19 @@ const columns = [
     key: "name",
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
+    title: "Email",
+    dataIndex: "email",
+    key: "email",
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
+    title: "Question",
+    dataIndex: "question",
+    key: "questions",
+  },
+  {
+    title: "Date & Time",
+    dataIndex: "date",
+    key: "date",
   },
 ];
 const KnowledgeBase = () => {
@@ -69,7 +90,7 @@ const KnowledgeBase = () => {
         </Col>
       </Row>
       <Row>
-        <Col span={24}>
+        <Col style={{ marginTop: "2rem" }} span={24}>
           <Table dataSource={dataSource} columns={columns} />
         </Col>
       </Row>

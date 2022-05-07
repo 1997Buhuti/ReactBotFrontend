@@ -1,29 +1,37 @@
 import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { saveMessage } from "../redux/actions/message_actions";
 import "./Chatbot2.css";
 import Message from "./Sections/Mesage";
 import Card from "./Sections/Card";
+import axios from "axios";
+import { v4 as uuid } from "uuid";
+import Cookies from "universal-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { saveMessage } from "../redux/actions/message_actions";
 import {
   RobotFilled,
   RobotOutlined,
   SendOutlined,
   SmileOutlined,
   StepBackwardFilled,
-  UserOutlined,
 } from "@ant-design/icons";
 import { List, Avatar, Typography, Button } from "antd";
 import { Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
 
+const cookies = new Cookies();
 const Chatbot2 = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [TextMessage, setTextMessage] = useState("");
+  const [TextMessage, setTextMessage] = useState({});
+  const [invalidMessage, setInvalidMessage] = useState("");
   let messagesFromRedux = useSelector((state) => state.message.messages);
   const messagesEndRef = useRef(null);
+
+  if (cookies.get("userId") === undefined) {
+    cookies.set("userId", uuid(), { path: "/" });
+  }
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -59,7 +67,26 @@ const Chatbot2 = () => {
     try {
       const res = await axios.post(" http://localhost:5000/api/df_text_query", {
         text: queryText,
+        userId: cookies.get("userId"),
       });
+
+      if (
+        res.data.allRequiredParamsPresent &&
+        res.data.parameters &&
+        res.data.action === "sendMessageToTeacher"
+      ) {
+        console.log(res.data.parameters.name);
+        const response = await axios.post(
+          " http://localhost:5000/api/insertDetails",
+          {
+            question: invalidMessage.msg.text.text,
+            name: res.data.parameters.fields.name.stringValue,
+            email: res.data.parameters.fields.email.stringValue,
+          }
+        );
+        console.log("OG Boss");
+        console.log(response);
+      }
       for (let msg of res.data.fulfillmentMessages) {
         says = {
           speaks: "bot",
@@ -78,7 +105,7 @@ const Chatbot2 = () => {
         },
       };
       dispatch(saveMessage(says));
-      console.log(says);
+      console.log(error);
     }
   };
   //function to invoke event_query functionality in dialogflow
@@ -86,6 +113,7 @@ const Chatbot2 = () => {
     try {
       const res = await axios.post("http://localhost:5000/api/df_event_query", {
         event: eventName,
+        userId: cookies.get("userId"),
       });
       const content = res.data.fulfillmentMessages[0];
       let says = {
@@ -106,11 +134,16 @@ const Chatbot2 = () => {
       console.log(error);
     }
   };
-  const handleQuickReplyPayload = (event, payload, text) => {
-    event.preventDefault();
-    event.stopPropagation();
 
-    df_text_query(text).then((r) => console.log(r));
+  const insertUserDetails = async (details) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/insertDetails", {
+        name: details.name,
+        email: details.email,
+        date: details.date,
+        question: details.question,
+      });
+    } catch (error) {}
   };
   const keyPressHanlder = (e) => {
     if (e.key === "Enter") {
@@ -137,7 +170,10 @@ const Chatbot2 = () => {
 
   //function to trigger ok and no
   const triggerRespons = (val) => {
-    console.log(val);
+    console.log("triggerResponse");
+    console.log(messagesFromRedux[messagesFromRedux.length - 2]);
+    setInvalidMessage(messagesFromRedux[messagesFromRedux.length - 2]);
+    console.log(invalidMessage);
     if (val === true) {
       // df_text_query("I have to ask the teacher");
       df_text_query("I need to leave a message to a teacher").then(() => {
@@ -146,9 +182,11 @@ const Chatbot2 = () => {
     }
   };
 
+  const setFunction = (val) => {
+    setInvalidMessage(val);
+  };
   //function to render single message
   const renderOneMessage = (message, i) => {
-    console.log("render One Message");
     if (message.speaks && message.msg.text && message.msg.text.text) {
       // let val = message.msg.text.text.toString() === "Answer";
       // console.log(val);
@@ -156,6 +194,10 @@ const Chatbot2 = () => {
       //   console.log("Tigga");
       // }
       if (message.msg.text.text.toString() === "Answer") {
+        // console.log(messagesFromRedux[messagesFromRedux.length - 2]);
+        // setFunction(
+        //   messagesFromRedux[messagesFromRedux.length - 2].msg.text.text
+        // );
         return (
           <div style={{ padding: "1rem", marginLeft: "2rem" }}>
             <h6>Sorry I cant understand what you've said?</h6>
@@ -215,13 +257,12 @@ const Chatbot2 = () => {
 
   //render all messages
   const renderMessages = (returnedMessages) => {
-    console.log("render Message");
     if (returnedMessages) {
       return returnedMessages.map((message, i) => {
         return renderOneMessage(message, i);
       });
     } else if (returnedMessages.length > 0) {
-      console.log("Hell returnedMessages are empoty");
+      console.log("Hell returnedMessages are empty");
     } else {
       return null;
     }
