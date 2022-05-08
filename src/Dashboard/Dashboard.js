@@ -26,6 +26,7 @@ SubMenu.propTypes = {
 const Dashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKey, setSelectedKey] = useState("");
+
   function HeaderView() {
     const location = useLocation();
     console.log(location.pathname);

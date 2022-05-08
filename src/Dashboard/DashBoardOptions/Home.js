@@ -1,47 +1,112 @@
-import React from "react";
-import { Row, Col, Table, Card } from "antd";
-//import Row from "antd/es/descriptions/Row";
-const dataSource = [
-  {
-    key: "1",
-    name: "Awishka",
-    email: "Random@gmail.com",
-    question: "Why do we need sunlight?",
-    date: "2022/04/11",
-  },
-  {
-    key: "2",
-    name: "Gimhanha",
-    email: "Clover@gmail.com",
-    question: "What are the sources of electricity?",
-    date: "2022/04/13",
-  },
-  {
-    key: "2",
-    name: "Sudeepa",
-    email: "Sudeepa@gmail.com",
-    question: "What is photosynthesis",
-    date: "2022/04/03",
-  },
-  {
-    key: "2",
-    name: "Charith",
-    email: "Charith@gmail.com",
-    question: "What are insulators",
-    date: "2022/04/03",
-  },
-];
+import React, { useEffect, useState } from "react";
+import { Row, Col, Table, Card, Input, Button } from "antd";
+import axios from "axios";
+import { SearchOutlined } from "@ant-design/icons";
 
 const columns = [
   {
     title: "Name",
     dataIndex: "name",
-    key: "name",
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => {
+      return (
+        <>
+          <Input
+            autoFocus
+            placeholder="Type text here"
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+              confirm({ closeDropdown: false });
+            }}
+            onPressEnter={() => {
+              confirm();
+            }}
+            onBlur={() => {
+              confirm();
+            }}
+          />
+          <Button
+            onClick={() => {
+              confirm();
+            }}
+            type="primary"
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => {
+              clearFilters();
+            }}
+            type="danger"
+          >
+            Reset
+          </Button>
+        </>
+      );
+    },
+    filterIcon: () => {
+      return <SearchOutlined />;
+    },
+    onFilter: (value, record) => {
+      return record.name.toLowerCase().includes(value.toLowerCase());
+    },
   },
   {
     title: "Email",
     dataIndex: "email",
-    key: "email",
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => {
+      return (
+        <>
+          <Input
+            autoFocus
+            placeholder="Type text here"
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+              confirm({ closeDropdown: false });
+            }}
+            onPressEnter={() => {
+              confirm();
+            }}
+            onBlur={() => {
+              confirm();
+            }}
+          />
+          <Button
+            onClick={() => {
+              confirm();
+            }}
+            type="primary"
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => {
+              clearFilters();
+            }}
+            type="danger"
+          >
+            Reset
+          </Button>
+        </>
+      );
+    },
+    filterIcon: () => {
+      return <SearchOutlined />;
+    },
+    onFilter: (value, record) => {
+      return record.name.toLowerCase().includes(value.toLowerCase());
+    },
   },
   {
     title: "Question",
@@ -54,7 +119,23 @@ const columns = [
     key: "date",
   },
 ];
+
 const KnowledgeBase = () => {
+  useEffect(() => {
+    fetchUserQueries().then((r) => console.log("hi"));
+  }, []);
+  const [userQueries, setUserQueries] = useState([]);
+
+  const fetchUserQueries = async () => {
+    const response = await axios
+      .get("http://localhost:5000/api/getDetails")
+      .catch((err) => {
+        console.log("Error:" + err);
+      });
+    setUserQueries(response.data);
+    console.log(userQueries);
+  };
+
   return (
     <>
       <Row>
@@ -71,11 +152,11 @@ const KnowledgeBase = () => {
         <Col span={6}>
           <Card
             size="small"
-            title="Total fallback intents"
+            title="Total questions"
             extra={<a href="#">More</a>}
             style={{ width: 300, backgroundColor: "#81ecec" }}
           >
-            <h4>5</h4>
+            <h4>{userQueries.length}</h4>
           </Card>
         </Col>
         <Col span={6}>
@@ -91,7 +172,7 @@ const KnowledgeBase = () => {
       </Row>
       <Row>
         <Col style={{ marginTop: "2rem" }} span={24}>
-          <Table dataSource={dataSource} columns={columns} />
+          <Table dataSource={userQueries} columns={columns} />
         </Col>
       </Row>
     </>

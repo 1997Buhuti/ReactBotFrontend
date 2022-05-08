@@ -23,7 +23,7 @@ const cookies = new Cookies();
 const Chatbot2 = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [TextMessage, setTextMessage] = useState({});
+  const [TextMessage, setTextMessage] = useState("");
   const [invalidMessage, setInvalidMessage] = useState("");
   let messagesFromRedux = useSelector((state) => state.message.messages);
   const messagesEndRef = useRef(null);
@@ -176,9 +176,17 @@ const Chatbot2 = () => {
     console.log(invalidMessage);
     if (val === true) {
       // df_text_query("I have to ask the teacher");
+      console.log("inside false");
       df_text_query("I need to leave a message to a teacher").then(() => {
         renderOneMessage(messagesFromRedux);
       });
+    } else {
+      console.log("inside false");
+      df_text_query("I don't want to send this message to the teacher").then(
+        () => {
+          renderOneMessage(messagesFromRedux);
+        }
+      );
     }
   };
 
