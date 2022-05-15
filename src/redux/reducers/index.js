@@ -1,8 +1,10 @@
-import { combineReducers } from 'redux';
-import message from './message_reducer';
+import { combineReducers } from "redux";
+import message from "./message_reducer";
+import intent from "./intent_reducer";
 
 const rootReducer = combineReducers({
-    message,
+  message,
+  intent,
 });
 
 export default rootReducer;
