@@ -3,13 +3,12 @@ import { Row, Col, Card, Image, Form, Button } from "antd";
 import Input from "antd/es/input/Input";
 import Checkbox from "antd/es/checkbox/Checkbox";
 import { Link } from "react-router-dom";
-import { Navigate } from "react-router-dom";
 import axios from "axios";
-import { Route } from "react-router";
+import { useNavigate } from "react-router";
 const Login = () => {
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
-
+  const navigate = useNavigate();
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -23,9 +22,10 @@ const Login = () => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-  const onLoginClick = (params) => {
+  const onLoginClick = () => {
     let email = userName;
     let pd = password;
+
     axios
       .post("http://localhost:5000/login", {
         email: email,
@@ -33,7 +33,7 @@ const Login = () => {
       })
       .then((response) => {
         if (response.data.result) {
-          <Route path="/login" element={<Navigate to="/dashboard" />} />;
+          navigate("/dashboard");
         }
       });
   };
