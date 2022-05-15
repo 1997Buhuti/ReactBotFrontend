@@ -33,7 +33,7 @@ const Login = () => {
       })
       .then((response) => {
         if (response.data.result) {
-          navigate("/dashboard");
+          navigate("/Dashboard");
         }
       });
   };
