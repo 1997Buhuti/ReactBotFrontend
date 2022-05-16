@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 const Header = () => {
   return (
     <div className="row nav-container">
@@ -28,7 +27,7 @@ const Header = () => {
               <Link to="/userGuide">User Guide</Link>{" "}
             </li>
             <li>
-              <Link to="/dashboard">Login</Link>{" "}
+              <Link to="/login">Login</Link>{" "}
             </li>
           </ul>
         </div>

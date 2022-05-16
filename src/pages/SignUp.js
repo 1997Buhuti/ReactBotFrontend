@@ -1,15 +1,10 @@
-import React, { useState } from "react";
-import { Button, Card, Col, Form, Image, Row } from "antd";
+import React from "react";
+import { Row, Col, Card, Image, Form, Button } from "antd";
+// import "./SignUp.css";
 import Input from "antd/es/input/Input";
 import Checkbox from "antd/es/checkbox/Checkbox";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { useNavigate } from "react-router";
-
-const Login = () => {
-  const [userName, setUserName] = useState(null);
-  const [password, setPassword] = useState(null);
-  const navigate = useNavigate();
+const SignUp = () => {
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -17,45 +12,26 @@ const Login = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  const handleUserNameChange = (e) => {
-    setUserName(e.target.value);
-  };
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-  const onLoginClick = () => {
-    axios
-      .post("http://localhost:5000/login", {
-        email: userName,
-        password: password,
-      })
-      .then((response) => {
-        if (response.data.result) {
-          navigate("/Dashboard");
-        }
-      });
-  };
-
   return (
-    <>
+    <div style={{ backgroundColor: "#FFF5EB", width: "100%", height: "100%" }}>
       <Row>
         <Col span={24} style={{ textAlign: "center" }}>
-          <h2>Welcome to Teacher Login</h2>
+          <h2>Welcome to Teacher Signup Page</h2>
         </Col>
       </Row>
       <Row>
-        <Col md={12} xs={24}>
+        <Col md={12} xs={24} style={{ backgroundColor: "#FFF5EB" }}>
           <Image
-            width="80%"
+            width="100%"
             preview={false}
-            src="https://storage.googleapis.com/chatbot_resources/Teacher_Login_image.jpg"
+            src="https://www.jotform.com/blog/wp-content/uploads/2020/07/How-to-create-an-online-lecture.png"
           />
         </Col>
         <Col md={12} xs={24}>
           <Card
-            bordered={false}
-            style={{ width: "80%" }}
             title="This Option is for Teachers only"
+            bordered={false}
+            style={{ width: "80%", backgroundColor: "#ffeac6" }}
           >
             <Form
               name="basic"
@@ -82,7 +58,19 @@ const Login = () => {
                   },
                 ]}
               >
-                <Input onChange={handleUserNameChange} />
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="TeacherId"
+                name="TeacherId"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your TeacherId!",
+                  },
+                ]}
+              >
+                <Input />
               </Form.Item>
 
               <Form.Item
@@ -95,7 +83,7 @@ const Login = () => {
                   },
                 ]}
               >
-                <Input.Password onChange={handlePasswordChange} />
+                <Input.Password />
               </Form.Item>
 
               <Form.Item
@@ -117,17 +105,16 @@ const Login = () => {
               >
                 <Row>
                   <Col style={{ marginRight: "1rem" }}>
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      onClick={onLoginClick}
-                    >
-                      Login
+                    <Button type="primary" htmlType="submit">
+                      SignUp
                     </Button>
                   </Col>
+                  <Col style={{ marginRight: "1rem", fontWeight: "bold" }}>
+                    or
+                  </Col>
                   <Col>
-                    <Link to="/signup">
-                      <Button type="primary">SignUp</Button>
+                    <Link to="/login">
+                      <Button type="primary">Login</Button>
                     </Link>
                   </Col>
                 </Row>
@@ -136,8 +123,8 @@ const Login = () => {
           </Card>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 
-export default Login;
+export default SignUp;
