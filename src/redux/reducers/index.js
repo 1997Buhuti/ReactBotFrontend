@@ -4,7 +4,6 @@ import intent from "./intent_reducer";
 
 const rootReducer = combineReducers({
   message,
-  intent,
 });
 
 export default rootReducer;
