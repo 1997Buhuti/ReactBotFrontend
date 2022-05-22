@@ -21,6 +21,8 @@ const KnowledgeBase = () => {
     getKnowledgebases();
   }, []);
 
+  useEffect(() => {}, [knowledgebase]);
+
   const showModal = () => {
     setVisible(true);
   };
@@ -76,6 +78,8 @@ const KnowledgeBase = () => {
       documentPath: payload.uri,
     });
     console.log(res);
+    knowledgebase.push(res.data.payload);
+    console.log(knowledgebase);
     setVisible(false);
   };
 
@@ -144,7 +148,7 @@ const KnowledgeBase = () => {
   };
   return (
     <>
-      <Table dataSource={knowledgebase} columns={columns} />
+      <Table dataSource={[...knowledgebase]} columns={columns} />
       <Button
         type="primary"
         shape="round"
