@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 const Login = () => {
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
+  const [InvalidCredentials, showInvalidCredentials] = useState(false);
   const navigate = useNavigate();
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -25,15 +26,20 @@ const Login = () => {
   };
   const onLoginClick = () => {
     axios
-      .post("http://localhost:5000/login", {
+      .post("http://localhost:5000/api/login", {
         email: userName,
         password: password,
       })
       .then((response) => {
         if (response.data.result) {
           navigate("/Dashboard");
+        } else {
+          showInvalidCredentials(true);
+          console.log(InvalidCredentials);
         }
       });
+    showInvalidCredentials(true);
+    console.log(InvalidCredentials);
   };
 
   return (
@@ -115,6 +121,11 @@ const Login = () => {
                   span: 16,
                 }}
               >
+                <span style={{ color: "red" }}>
+                  {InvalidCredentials
+                    ? "Invalid Credentials Please Check Again"
+                    : ""}
+                </span>
                 <Row>
                   <Col style={{ marginRight: "1rem" }}>
                     <Button

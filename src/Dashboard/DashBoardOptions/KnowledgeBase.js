@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Space, Table } from "antd";
+import { Button, Form, Space, Spin, Table } from "antd";
 import { getallKB } from "../../API/api";
 import {
   CloudDownloadOutlined,
@@ -9,11 +9,13 @@ import {
 import axios from "axios";
 import Modal from "antd/es/modal/Modal";
 import AddKbFormModal from "./modals/AddKbFormModal";
+import notify from "../../Services/NotificationService/NotificationService";
 
 const KnowledgeBase = () => {
   const [knowledgebase, setKnowledgebase] = useState([]);
   const [knowledgebaseSize, setKnowledgebaseSize] = useState(1);
   const [visible, setVisible] = useState(false);
+  const [spinner, enableSpinner] = useState(false);
 
   useEffect(() => {
     getKnowledgebases();
@@ -36,6 +38,35 @@ const KnowledgeBase = () => {
       document.body.appendChild(link);
       link.click();
     });
+  };
+
+  const onDeleteClick = (parmas) => {
+    const knowledgeBaseToDelete = knowledgebase.filter((item) => {
+      if (item.displayName === parmas) {
+        return item;
+      }
+    });
+    enableSpinner(true);
+    axios
+      .post("http://localhost:5000/api/deletedKB", {
+        docName: knowledgeBaseToDelete[0].name,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response);
+          notify("deleteSuccess");
+          setKnowledgebase(
+            knowledgebase.filter((item) => item.displayName !== parmas)
+          );
+        } else {
+          console.log(response);
+          notify("Error!");
+        }
+        enableSpinner(false);
+      });
+    console.log("this is the document to be deleted");
+    console.log(knowledgeBaseToDelete);
+    console.log(knowledgeBaseToDelete[0].name);
   };
 
   const handleOkBtnClicked = async (payload) => {
@@ -91,6 +122,7 @@ const KnowledgeBase = () => {
           </CloudDownloadOutlined>
           <DeleteOutlined
             style={{ fontSize: "16px", cursor: "pointer", color: "red" }}
+            onClick={() => onDeleteClick(record.displayName)}
           />
         </Space>
       ),
@@ -105,6 +137,7 @@ const KnowledgeBase = () => {
     } else {
       console.log("worked");
       setKnowledgebase(KB.data.payload);
+      console.log(knowledgebase);
       setKnowledgebaseSize(knowledgebase.length);
       console.log(knowledgebaseSize);
     }
@@ -121,6 +154,7 @@ const KnowledgeBase = () => {
       >
         Add KnowledgeBase{" "}
       </Button>
+      {spinner && <Spin size="large" style={{ marginLeft: "10em" }} />}
       <AddKbFormModal
         visibility={visible}
         handleOkBtnClicked={handleOkBtnClicked}

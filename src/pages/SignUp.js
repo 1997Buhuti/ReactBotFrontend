@@ -1,17 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Card, Image, Form, Button } from "antd";
 // import "./SignUp.css";
 import Input from "antd/es/input/Input";
 import Checkbox from "antd/es/checkbox/Checkbox";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import notify from "../Services/NotificationService/NotificationService";
+
 const SignUp = () => {
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [teacherId, setTeacherId] = useState("");
+
+  const handleUserNameChange = (e) => {
+    setUserName(e.target.value);
+  };
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+  const handleTeacherIdChange = (e) => {
+    setTeacherId(e.target.value);
+  };
   const onFinish = (values) => {
     console.log("Success:", values);
   };
-
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  const clearFields = () => {
+    setTeacherId("");
+    setPassword("");
+    setTeacherId("");
+  };
+
+  const onSignUpClick = () => {
+    axios
+      .post("http://localhost:5000/api/addNewUser", {
+        email: userName,
+        teacherId: teacherId,
+        password: password,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response);
+          notify("addNewUser");
+          clearFields();
+        } else {
+          console.log(response);
+          notify("Error!");
+        }
+      });
+  };
+
   return (
     <div style={{ backgroundColor: "#FFF5EB", width: "100%", height: "100%" }}>
       <Row>
@@ -58,7 +98,7 @@ const SignUp = () => {
                   },
                 ]}
               >
-                <Input />
+                <Input onChange={handleUserNameChange} value={userName} />
               </Form.Item>
               <Form.Item
                 label="TeacherId"
@@ -70,7 +110,7 @@ const SignUp = () => {
                   },
                 ]}
               >
-                <Input />
+                <Input onChange={handleTeacherIdChange} value={teacherId} />
               </Form.Item>
 
               <Form.Item
@@ -83,7 +123,10 @@ const SignUp = () => {
                   },
                 ]}
               >
-                <Input.Password />
+                <Input.Password
+                  onChange={handlePasswordChange}
+                  value={password}
+                />
               </Form.Item>
 
               <Form.Item
@@ -105,7 +148,11 @@ const SignUp = () => {
               >
                 <Row>
                   <Col style={{ marginRight: "1rem" }}>
-                    <Button type="primary" htmlType="submit">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      onClick={onSignUpClick}
+                    >
                       SignUp
                     </Button>
                   </Col>

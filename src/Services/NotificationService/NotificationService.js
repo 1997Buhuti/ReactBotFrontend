@@ -26,6 +26,16 @@ const notify = (messageType) => {
         position: toast.POSITION.BOTTOM_LEFT,
       });
       break;
+    case "addNewUser":
+      toast.info("User Added Successfully", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      break;
+    case "deleteSuccess":
+      toast.info("KnowledgeBase Deleted Successfully", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      break;
     case "Error!":
       toast.error("Error!", { position: toast.POSITION.BOTTOM_CENTER });
       break;
