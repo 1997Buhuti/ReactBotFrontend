@@ -127,7 +127,7 @@ const Chatbot2 = () => {
         who: "bot",
         content: {
           text: {
-            text: " Error just occured, please check the problem",
+            text: " Error just occurred, please check the problem",
           },
         },
       };
@@ -237,11 +237,20 @@ const Chatbot2 = () => {
       );
     } else if (message.speaks && message.msg.payload.fields.card) {
       console.log(message.msg.payload.fields.card.listValue.values);
+      console.log(
+        message.msg.payload.fields.card.listValue.values[0].structValue.fields
+          .textResponse
+      );
       const AvatarSrc =
         message.who === "bot" ? <RobotOutlined /> : <SmileOutlined />;
-
+      const textResponse =
+        message.msg.payload.fields.card.listValue.values[0].structValue.fields
+          .response.stringValue;
       return (
         <div>
+          <h6 style={{ marginLeft: "3em", color: "blue", marginTop: "1em" }}>
+            {textResponse ? textResponse.toString() : ""}
+          </h6>
           <List.Item style={{ padding: "1rem" }} className="CardsMessage">
             <List.Item.Meta
               avatar={
