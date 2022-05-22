@@ -21,6 +21,7 @@ import Dashboard from "./Dashboard/Dashboard";
 import KnowledgeBase from "./Dashboard/DashBoardOptions/KnowledgeBase";
 import Home from "./Dashboard/DashBoardOptions/Home";
 import SignUp from "./pages/SignUp";
+import PdfBasedKnowledgeBase from "./Dashboard/DashBoardOptions/PDFBasedKb";
 
 const createStoreWithMiddleware = applyMiddleware(
   promiseMiddleware,
@@ -57,10 +58,18 @@ ReactDOM.render(
           <Route path="userGuide" element={<Landing />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />
+          <Route
+            path="PdfBasedKnowledgeBase"
+            element={<PdfBasedKnowledgeBase />}
+          />
           <Route path="chatbot" element={<Chatbot2 />} />
           <Route path="dashboard/*" element={<Dashboard />}>
             <Route ath="dashboard" index element={<Home />} />
             <Route path="knowledgebase" element={<KnowledgeBase />} />
+            <Route
+              path="PdfBasedKnowledgeBase"
+              element={<PdfBasedKnowledgeBase />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>

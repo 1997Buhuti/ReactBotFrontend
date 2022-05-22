@@ -5,6 +5,8 @@ import { Breadcrumb, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import * as PropTypes from "prop-types";
 import {
+  BackwardOutlined,
+  ExperimentOutlined,
   HomeOutlined,
   MessageOutlined,
   ReadOutlined,
@@ -82,6 +84,22 @@ const Dashboard = () => {
           >
             KnowledgeBase
             <Link to="KnowledgeBase" />
+          </Menu.Item>
+          <Menu.Item
+            key="3"
+            icon={<ExperimentOutlined />}
+            onClick={() => setSelectedKey("3")}
+          >
+            PDF Based KB
+            <Link to="/PdfBasedKnowledgeBase" />
+          </Menu.Item>
+          <Menu.Item
+            key="4"
+            icon={<BackwardOutlined />}
+            onClick={() => setSelectedKey("4")}
+          >
+            Back To Home Page
+            <Link to="/" />
           </Menu.Item>
         </Menu>
       </Sider>
