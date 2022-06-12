@@ -22,6 +22,8 @@ import KnowledgeBase from "./Dashboard/DashBoardOptions/KnowledgeBase";
 import Home from "./Dashboard/DashBoardOptions/Home";
 import SignUp from "./pages/SignUp";
 import PdfBasedKnowledgeBase from "./Dashboard/DashBoardOptions/PDFBasedKb";
+import Header from "./Header";
+import Footer from "./Footer";
 
 const createStoreWithMiddleware = applyMiddleware(
   promiseMiddleware,
@@ -52,6 +54,10 @@ ReactDOM.render(
       )}
     >
       <BrowserRouter>
+        {/*{window.location.pathname !== "/dashboard" ||*/}
+        {/*  "/Dashboard" ||*/}
+        {/*  "/login" ||*/}
+        {/*  ("/signup" !== window.location.pathname && <Header />)}*/}
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="about" element={<About />} />
@@ -72,6 +78,10 @@ ReactDOM.render(
             />
           </Route>
         </Routes>
+        {/*{window.location.pathname !== "/dashboard" ||*/}
+        {/*  "/Dashboard" ||*/}
+        {/*  "/login" ||*/}
+        {/*  ("/signup" !== window.location.pathname && <Footer />)}*/}
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

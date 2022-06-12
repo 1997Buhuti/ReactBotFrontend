@@ -95,10 +95,9 @@ function App() {
             </motion.div>
           </div>
         </div>
-        <div className="header-container col s12" />
-      </div>
-      <div className="row">
-        <Footer />
+        <div className="header-container col s12">
+          <Footer />
+        </div>
       </div>
     </div>
   );
