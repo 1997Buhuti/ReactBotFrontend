@@ -17,7 +17,9 @@ const About = () => {
     <>
       <Header />
       <Typography>
-        <Title>About Us</Title>
+        <Title style={{ textAlign: "center", marginBottom: "1em" }}>
+          About Us
+        </Title>
         <Divider orientation="center">
           <h3>Origin Story</h3>
         </Divider>

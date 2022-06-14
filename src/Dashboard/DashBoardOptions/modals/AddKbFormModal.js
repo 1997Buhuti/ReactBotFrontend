@@ -1,10 +1,11 @@
-import { Modal, Button, Form, Select, Upload, message } from "antd";
+import { Modal, Button, Form,  Upload, } from "antd";
 import { useState } from "react";
 import Input from "antd/es/input/Input";
 import { UploadOutlined } from "@ant-design/icons";
 import _ from "lodash";
 import NotificationService from "../../../Services/NotificationService/NotificationService";
 import notify from "../../../Services/NotificationService/NotificationService";
+import { config } from "../../../constance";
 
 const onFinish = (values) => {
   console.log("Success:", values);
@@ -26,7 +27,7 @@ const AddKbFormModal = (props) => {
   const [fileName, setFileName] = useState(""); // state for fileName
   const [uri, setUri] = useState(""); // state for URI
   const [confirmLoading, setConfirmLoading] = useState(false);
-
+  const BASEURL = config.url.API_URL;
   const [form] = Form.useForm();
   const onFinish = (values) => {
     console.log(values);
@@ -85,7 +86,7 @@ const AddKbFormModal = (props) => {
         </Form.Item>
         <Form.Item {...tailLayout}>
           <Upload
-            action={"http://localhost:5000/api/upload"}
+            action={`${BASEURL}/api/upload`}
             multiple={false}
             beforeUpload={(file) => {
               if (file) {

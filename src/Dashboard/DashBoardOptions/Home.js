@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Table, Card, Input, Button } from "antd";
 import axios from "axios";
 import { SearchOutlined } from "@ant-design/icons";
-
+import { config } from "../../constance";
+const BASEURL = config.url.API_URL;
 const columns = [
   {
     title: "Name",
@@ -128,7 +129,7 @@ const KnowledgeBase = () => {
 
   const fetchUserQueries = async () => {
     const response = await axios
-      .get("http://localhost:5000/api/getDetails")
+      .get(`${BASEURL}/api/getDetails`)
       .catch((err) => {
         console.log("Error:" + err);
       });
