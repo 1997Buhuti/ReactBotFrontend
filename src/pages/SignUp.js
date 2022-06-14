@@ -6,6 +6,7 @@ import Checkbox from "antd/es/checkbox/Checkbox";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import notify from "../Services/NotificationService/NotificationService";
+import { config } from "../constance";
 
 const SignUp = () => {
   const [userName, setUserName] = useState("");
@@ -34,8 +35,9 @@ const SignUp = () => {
   };
 
   const onSignUpClick = () => {
+    const BASEURL = config.url.API_URL;
     axios
-      .post("http://localhost:5000/api/addNewUser", {
+      .post("{$BASEURL}/api/addNewUser", {
         email: userName,
         teacherId: teacherId,
         password: password,

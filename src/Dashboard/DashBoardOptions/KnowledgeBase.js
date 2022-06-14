@@ -10,6 +10,8 @@ import axios from "axios";
 import Modal from "antd/es/modal/Modal";
 import AddKbFormModal from "./modals/AddKbFormModal";
 import notify from "../../Services/NotificationService/NotificationService";
+import { config } from "../../constance";
+const BASEURL = config.url.API_URL;
 
 const KnowledgeBase = () => {
   const [knowledgebase, setKnowledgebase] = useState([]);
@@ -29,7 +31,7 @@ const KnowledgeBase = () => {
   // Service for downloading the knowledgebase csv
   const onDownloadClick = (params) => {
     axios({
-      url: `http://localhost:5000/api/files/${params}`,
+      url: `${BASEURL}/api/files/${params}`,
       method: "GET",
       responseType: "blob", // important
     }).then((response) => {
@@ -50,7 +52,7 @@ const KnowledgeBase = () => {
     });
     enableSpinner(true);
     axios
-      .post("http://localhost:5000/api/deletedKB", {
+      .post(`${BASEURL}/api/deletedKB`, {
         docName: knowledgeBaseToDelete[0].name,
       })
       .then((response) => {
@@ -73,7 +75,7 @@ const KnowledgeBase = () => {
 
   const handleOkBtnClicked = async (payload) => {
     console.log("handleOkBtnClicked");
-    const res = await axios.post("http://localhost:5000/api/uploadKB", {
+    const res = await axios.post(`${BASEURL}/api/uploadKB`, {
       documentName: payload.fileName,
       documentPath: payload.uri,
     });

@@ -5,8 +5,10 @@ import Checkbox from "antd/es/checkbox/Checkbox";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { config } from "../constance";
 
 const Login = () => {
+  const BASEURL = config.url.API_URL;
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
   const [InvalidCredentials, showInvalidCredentials] = useState(false);
@@ -26,7 +28,7 @@ const Login = () => {
   };
   const onLoginClick = () => {
     axios
-      .post("http://localhost:5000/api/login", {
+      .post(`${BASEURL}/api/login`, {
         email: userName,
         password: password,
       })

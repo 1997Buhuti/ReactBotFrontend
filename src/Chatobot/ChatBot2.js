@@ -17,7 +17,9 @@ import {
 import { List, Avatar, Typography, Button } from "antd";
 import { Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
+import { config } from "../constance";
 const { Title } = Typography;
+const BASEURL = config.url.API_URL;
 
 const cookies = new Cookies();
 const Chatbot2 = () => {
@@ -65,7 +67,7 @@ const Chatbot2 = () => {
     dispatch(saveMessage(says));
     //this method is used to set the state  of the message
     try {
-      const res = await axios.post(" http://localhost:5000/api/df_text_query", {
+      const res = await axios.post(`${BASEURL}/api/df_text_query`, {
         text: queryText,
         userId: cookies.get("userId"),
       });
@@ -76,14 +78,11 @@ const Chatbot2 = () => {
         res.data.action === "sendMessageToTeacher"
       ) {
         console.log(res.data.parameters.name);
-        const response = await axios.post(
-          " http://localhost:5000/api/insertDetails",
-          {
-            question: invalidMessage.msg.text.text,
-            name: res.data.parameters.fields.name.stringValue,
-            email: res.data.parameters.fields.email.stringValue,
-          }
-        );
+        const response = await axios.post(`${BASEURL}/api/insertDetails`, {
+          question: invalidMessage.msg.text.text,
+          name: res.data.parameters.fields.name.stringValue,
+          email: res.data.parameters.fields.email.stringValue,
+        });
         console.log("OG Boss");
         console.log(response);
       }
@@ -111,7 +110,7 @@ const Chatbot2 = () => {
   //function to invoke event_query functionality in dialogflow
   const df_event_query = async (eventName) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/df_event_query", {
+      const res = await axios.post(`${BASEURL}/api/df_event_query`, {
         event: eventName,
         userId: cookies.get("userId"),
       });
@@ -137,7 +136,7 @@ const Chatbot2 = () => {
 
   const insertUserDetails = async (details) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/insertDetails", {
+      const res = await axios.post(`${BASEURL}/api/insertDetail`, {
         name: details.name,
         email: details.email,
         date: details.date,
