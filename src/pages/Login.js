@@ -6,9 +6,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { config } from "../constance";
-
+const BASEURL = config.url.API_URL;
 const Login = () => {
-  const BASEURL = config.url.API_URL;
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
   const [InvalidCredentials, showInvalidCredentials] = useState(false);
