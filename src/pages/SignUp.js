@@ -37,7 +37,7 @@ const SignUp = () => {
   const onSignUpClick = () => {
     const BASEURL = config.url.API_URL;
     axios
-      .post("{$BASEURL}/api/addNewUser", {
+      .post(`${BASEURL}/api/addNewUser`, {
         email: userName,
         teacherId: teacherId,
         password: password,

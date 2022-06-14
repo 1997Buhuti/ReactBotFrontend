@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { Button, Card, Col, Form, Image, Row } from "antd";
 import Input from "antd/es/input/Input";
 import Checkbox from "antd/es/checkbox/Checkbox";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router";
 import { config } from "../constance";
 const BASEURL = config.url.API_URL;
 const Login = () => {
@@ -33,14 +32,11 @@ const Login = () => {
       })
       .then((response) => {
         if (response.data.result) {
+          showInvalidCredentials(false);
           navigate("/Dashboard");
-        } else {
-          showInvalidCredentials(true);
-          console.log(InvalidCredentials);
         }
       });
     showInvalidCredentials(true);
-    console.log(InvalidCredentials);
   };
 
   return (
