@@ -143,7 +143,7 @@ const KnowledgeBase = () => {
     } else {
       console.log("worked");
       setKnowledgebase(KB.data.payload);
-      console.log(knowledgebase);
+      console.log(KB.data.payload.length);
       setKnowledgebaseSize(knowledgebase.length);
       console.log(knowledgebaseSize);
     }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Table, Card, Input, Button } from "antd";
 import axios from "axios";
 import { SearchOutlined } from "@ant-design/icons";
+import { getallKB } from "../../API/api";
 import { config } from "../../constance";
 const BASEURL = config.url.API_URL;
 const columns = [
@@ -122,11 +123,18 @@ const columns = [
 ];
 
 const KnowledgeBase = () => {
+  const [knowledgebaseCount, setKnowledgebaseCount] = useState(0);
   useEffect(() => {
     fetchUserQueries().then((r) => console.log("hi"));
+    getKnowledgebases().then((r) => console.log(r));
   }, []);
   const [userQueries, setUserQueries] = useState([]);
 
+  const getKnowledgebases = async () => {
+    const KB = await getallKB();
+    console.log("Knowledgebases length=" + KB.data.payload.length);
+    setKnowledgebaseCount(KB.data.payload.length);
+  };
   const fetchUserQueries = async () => {
     const response = await axios
       .get(`${BASEURL}/api/getDetails`)
@@ -147,7 +155,7 @@ const KnowledgeBase = () => {
             extra={<a href="#">More</a>}
             style={{ width: 300, backgroundColor: "#a29bfe" }}
           >
-            <h4>1345</h4>
+            <h4>{knowledgebaseCount}</h4>
           </Card>
         </Col>
         <Col span={6}>
@@ -167,7 +175,7 @@ const KnowledgeBase = () => {
             extra={<a href="#">More</a>}
             style={{ width: 300, backgroundColor: "#55efc4" }}
           >
-            <h4>15</h4>
+            <h4>40</h4>
           </Card>
         </Col>
       </Row>
